@@ -1,0 +1,13 @@
+# Root files to ignore
+node_modules/
+.DS_Store
+
+# Backend ignores
+backend/node_modules/
+backend/uploads/
+.env
+
+# Frontend ignores
+frontend/node_modules/
+frontend/dist/
+frontend/.env
