@@ -25,8 +25,9 @@ export default function Home() {
       const formData = new FormData();
       formData.append('file', file);
 
-      // We dynamically use window.location.hostname to hit the backend running on the same LAN IP
-      const API_URL = `http://${window.location.hostname}:3000/api/upload`;
+      // Logic for cloud deployment vs local network
+      const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+      const API_URL = `${BASE_URL}/api/upload`;
       
       const response = await axios.post(API_URL, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -36,8 +37,8 @@ export default function Home() {
         const data = response.data.file;
         setFileData(data);
         
-        // Ensure UI generates correct LAN IP URL
-        const generatedUrl = `http://${window.location.hostname}:${window.location.port}/file/${data.id}`;
+        // Ensure UI generates correct URL (current location + file path)
+        const generatedUrl = `${window.location.origin}/file/${data.id}`;
         setShareUrl(generatedUrl);
 
         // Add to history

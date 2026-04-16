@@ -14,13 +14,14 @@ export default function Download() {
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const API_URL = `http://${window.location.hostname}:3000/api/file/${id}`;
+        const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+        const API_URL = `${BASE_URL}/api/file/${id}`;
         const res = await axios.get(API_URL);
         const metadata = res.data.file;
         setFileDetails(metadata);
         
         if (metadata.originalName === 'Secure_Note.txt') {
-           const contentRes = await axios.get(`http://${window.location.hostname}:3000/api/content/${id}`);
+           const contentRes = await axios.get(`${BASE_URL}/api/content/${id}`);
            setNoteContent(contentRes.data);
         }
       } catch (err) {
@@ -33,7 +34,8 @@ export default function Download() {
   }, [id]);
 
   const handleDownload = () => {
-    const downloadUrl = `http://${window.location.hostname}:3000/api/download/${id}`;
+    const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+    const downloadUrl = `${BASE_URL}/api/download/${id}`;
     window.open(downloadUrl, '_blank');
   };
 

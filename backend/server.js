@@ -7,9 +7,12 @@ const fs = require('fs');
 const os = require('os');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : true,
+  credentials: true
+}));
 app.use(express.json());
 
 // Set up storage
@@ -158,5 +161,8 @@ setInterval(() => {
 }, 60 * 1000); // Check every minute
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Backend server running on http://${getLocalIP()}:${PORT}`);
+  console.log(`Backend server running on port ${PORT}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`Local network URL: http://${getLocalIP()}:${PORT}`);
+  }
 });

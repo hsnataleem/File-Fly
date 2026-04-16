@@ -16,7 +16,8 @@ export default function ActiveTransfers() {
     const fetchStatus = async () => {
       try {
         const ids = transfers.map(t => t.id);
-        const API_URL = `http://${window.location.hostname}:3000/api/files/status`;
+        const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+        const API_URL = `${BASE_URL}/api/files/status`;
         const res = await axios.post(API_URL, { ids });
         setStatuses(res.data.statuses);
       } catch (err) {
