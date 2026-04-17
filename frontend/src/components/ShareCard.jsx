@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { FileText, Copy, QrCode } from 'lucide-react';
+import { FileText, Copy, QrCode, Globe, Home } from 'lucide-react';
 
 export default function ShareCard({ fileData, shareUrl }) {
   const [timeLeft, setTimeLeft] = useState('--:--');
@@ -68,8 +68,19 @@ export default function ShareCard({ fileData, shareUrl }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h4 className="font-bold text-slate-700 mb-3">1. Link</h4>
-          <div className="flex items-center gap-2 border shadow-inner border-slate-200 rounded-lg px-3 py-2 bg-slate-50 mb-4">
+          <div className="flex items-center gap-2 border shadow-inner border-slate-200 rounded-lg px-3 py-2 bg-slate-50 mb-1">
             <span className="text-sm text-slate-600 truncate flex-1 font-mono">{shareUrl}</span>
+          </div>
+          <div className="flex items-center gap-1.5 mb-4 ml-1">
+            {shareUrl.includes('localhost') || shareUrl.includes('127.0.0.1') ? (
+              <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100 flex items-center gap-1 uppercase tracking-tighter">
+                <Home size={10} /> Local Network Only
+              </span>
+            ) : (
+              <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100 flex items-center gap-1 uppercase tracking-tighter">
+                <Globe size={10} /> Public Link
+              </span>
+            )}
           </div>
           <button 
             onClick={copyLink}
