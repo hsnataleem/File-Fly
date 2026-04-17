@@ -14,12 +14,12 @@ services:
         value: production
 
   # Frontend Static Site
-  - type: static
+  - type: web
     name: file-fly-frontend
-    env: static
+    runtime: static
     plan: free
     buildCommand: npm install && npm run build
-    publishPath: dist
+    staticPublishPath: dist
     rootContext: frontend
     # This rule fixes the "Not Found" error for React Router subpaths
     routes:
