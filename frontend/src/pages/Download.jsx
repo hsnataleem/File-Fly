@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Download as DownloadIcon, File, AlertCircle, Type, Copy, Check } from 'lucide-react';
+import { Download as DownloadIcon, File, AlertCircle, Type, Copy, Check, ServerCrash } from 'lucide-react';
+import { getBaseUrl } from '../config';
 
 export default function Download() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function Download() {
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+        const BASE_URL = getBaseUrl();
         const API_URL = `${BASE_URL}/api/file/${id}`;
         const res = await axios.get(API_URL);
         const metadata = res.data.file;
@@ -25,7 +26,11 @@ export default function Download() {
            setNoteContent(contentRes.data);
         }
       } catch (err) {
-        setError(true);
+        if (err.code === 'ERR_NETWORK') {
+           setError('NETWORK_ERROR');
+        } else {
+           setError(true);
+        }
       } finally {
         setLoading(false);
       }
@@ -34,7 +39,7 @@ export default function Download() {
   }, [id]);
 
   const handleDownload = () => {
-    const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+    const BASE_URL = getBaseUrl();
     const downloadUrl = `${BASE_URL}/api/download/${id}`;
     window.open(downloadUrl, '_blank');
   };
@@ -49,6 +54,18 @@ export default function Download() {
     return (
       <div className="min-h-screen bg-[#F0F7FA] flex items-center justify-center">
         <div className="animate-spin text-teal-500"><File size={48} /></div>
+      </div>
+    );
+  }
+
+  if (error === 'NETWORK_ERROR') {
+    return (
+      <div className="min-h-screen bg-[#F0F7FA] flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-2xl shadow-xl text-center max-w-sm border-t-4 border-amber-400">
+          <ServerCrash size={48} className="text-amber-400 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-slate-800">Connection Failed</h2>
+          <p className="text-slate-500 mt-2">Cannot reach the backend server. Make sure it's running and accessible at {getBaseUrl()}.</p>
+        </div>
       </div>
     );
   }

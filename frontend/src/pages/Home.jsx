@@ -5,6 +5,8 @@ import UploadCard from '../components/UploadCard';
 import ShareCard from '../components/ShareCard';
 import FileHistory from '../components/FileHistory';
 import Footer from '../components/Footer';
+import { getBaseUrl } from '../config';
+import { Share2, AlertTriangle } from 'lucide-react';
 
 export default function Home() {
   const [fileData, setFileData] = useState(null);
@@ -14,6 +16,13 @@ export default function Home() {
   });
   const [isUploading, setIsUploading] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
+  const [showLocalhostWarning, setShowLocalhostWarning] = useState(false);
+
+  useEffect(() => {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      setShowLocalhostWarning(true);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('fileFly_history', JSON.stringify(history));
@@ -26,7 +35,7 @@ export default function Home() {
       formData.append('file', file);
 
       // Logic for cloud deployment vs local network
-      const BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
+      const BASE_URL = getBaseUrl();
       const API_URL = `${BASE_URL}/api/upload`;
       
       const response = await axios.post(API_URL, formData, {
@@ -58,6 +67,19 @@ export default function Home() {
       
       <main className="container flex-1 mx-auto px-4 py-16 relative">
         <div className="flex flex-col items-center">
+          {showLocalhostWarning && !fileData && (
+            <div className="mb-8 w-full max-w-xl bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3 animate-in fade-in slide-in-from-top-4 duration-500">
+              <AlertTriangle className="text-amber-500 shrink-0 mt-0.5" size={20} />
+              <div>
+                <h4 className="font-bold text-amber-800 text-sm">Accessing via localhost</h4>
+                <p className="text-amber-700 text-xs mt-1 leading-relaxed">
+                  Scanning QR codes won't work on other devices if you use "localhost". 
+                  Try using your computer's IP address instead for mobile sharing.
+                </p>
+              </div>
+            </div>
+          )}
+
           {isUploading ? (
             <div className="animate-pulse bg-white p-8 rounded-2xl shadow-xl border-2 border-teal-200 w-full max-w-xl text-center">
               <h2 className="text-2xl font-bold text-slate-800">Uploading File...</h2>

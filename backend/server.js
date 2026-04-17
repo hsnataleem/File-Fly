@@ -53,8 +53,12 @@ function getLocalIP() {
 }
 
 // Endpoints
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date().toISOString() });
+});
+
 app.get('/api/ip', (req, res) => {
-  res.json({ ip: getLocalIP() });
+  res.json({ ip: getLocalIP(), port: PORT });
 });
 
 app.post('/api/upload', upload.single('file'), (req, res) => {

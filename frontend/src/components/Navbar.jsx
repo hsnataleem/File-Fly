@@ -1,9 +1,26 @@
-import React, { useState } from 'react';
-import { User, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Info, Activity, ShieldAlert, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { getBaseUrl } from '../config';
 
 export default function Navbar() {
   const [showAccountPopup, setShowAccountPopup] = useState(false);
+  const [status, setStatus] = useState('checking'); // checking, online, offline
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        await axios.get(`${getBaseUrl()}/health`);
+        setStatus('online');
+      } catch (e) {
+        setStatus('offline');
+      }
+    };
+    checkStatus();
+    const interval = setInterval(checkStatus, 10000); // Check every 10s
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <nav className="flex items-center justify-between px-8 py-4 bg-white shadow-sm relative z-50">
@@ -12,8 +29,21 @@ export default function Navbar() {
           <img src="/logoi-transparent.png" alt="File Fly Logo" className="h-16 md:h-24 w-auto object-contain cursor-pointer transform hover:scale-105 transition-all drop-shadow-sm" />
         </Link>
       </div>
-      
-      <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 relative">
+       
+      <div className="flex items-center gap-4">
+        {/* Status Indicator */}
+        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-500 shadow-sm border ${
+          status === 'online' ? 'bg-green-50 text-green-600 border-green-100' : 
+          status === 'offline' ? 'bg-red-50 text-red-600 border-red-100' : 
+          'bg-slate-50 text-slate-400 border-slate-100'
+        }`}>
+          {status === 'online' ? <CheckCircle size={14} /> : status === 'offline' ? <ShieldAlert size={14} /> : <Activity size={14} className="animate-pulse" />}
+          <span className="hidden sm:inline uppercase tracking-wider">
+            {status === 'online' ? 'Server Online' : status === 'offline' ? 'Server Offline' : 'Connecting...'}
+          </span>
+        </div>
+
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 relative">
         <Link to="/" className="text-blue-600 font-semibold hover:text-blue-700">Home</Link>
         <Link to="/how-it-works" className="hover:text-blue-600 transition-colors">How it Works</Link>
         <Link to="/active-transfers" className="hover:text-blue-600 transition-colors">Active Transfers</Link>
