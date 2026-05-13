@@ -158,15 +158,26 @@ setInterval(() => {
   const now = Date.now();
   for (const [id, fileData] of fileRegistry.entries()) {
     if (now > fileData.expiresAt) {
-      const filePath = path.join(uploadDir, fileData.filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+      try {
+        const filePath = path.join(uploadDir, fileData.filename);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      } catch (err) {
+        console.error(`Error deleting file ${id}:`, err.message);
+      } finally {
+        fileRegistry.delete(id);
+        console.log(`Cleaned up expired file: ${id}`);
       }
-      fileRegistry.delete(id);
-      console.log(`Cleaned up expired file: ${id}`);
     }
   }
 }, 60 * 1000); // Check every minute
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled server error:', err.stack);
+  res.status(500).json({ error: 'Internal server error occurred' });
+});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend server running on port ${PORT}`);
