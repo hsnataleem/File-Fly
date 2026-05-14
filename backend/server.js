@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, uuidv4() + path.extname(file.originalname));
+    cb(null, crypto.randomUUID() + path.extname(file.originalname));
   }
 });
 
@@ -70,7 +70,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
-  const fileId = uuidv4();
+  const fileId = crypto.randomUUID();
   const fileData = {
     id: fileId,
     originalName: req.file.originalname,
