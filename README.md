@@ -4,20 +4,29 @@
 
 File Fly is a lightweight, full-stack web application that enables quick and secure file sharing within your local network. Share files effortlessly by generating QR codes or direct links—no cloud storage, no complicated setup.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-hsnat.me-blue?style=for-the-badge)](https://hsnat.me)
+
 ---
 
-## 📋 Table of Contents
+## 📖 About
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Installation](#installation)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-- [How It Works](#how-it-works)
-- [Configuration](#configuration)
-- [License](#license)
+File Fly was created to solve the problem of quickly sharing files within a local network without relying on cloud services or complex setups. Whether you're in an office, at home, or at a coffee shop, File Fly makes it effortless to share files with anyone on your network.
+
+### Why File Fly?
+
+- **No Cloud Required** - All transfers happen locally on your network
+- **Zero Configuration** - Just run and share
+- **Fast & Secure** - Direct peer-to-peer transfers with auto-expiry
+- **Open Source** - Built with modern web technologies
+- **Privacy First** - Your files never leave your network
+
+### Perfect For:
+
+- 🏢 Office file transfers
+- 👥 Team collaboration
+- 📱 Mobile-to-desktop syncing
+- 🎓 Educational demonstrations
+- 🛠️ Development and testing
 
 ---
 
@@ -147,6 +156,12 @@ npm run dev --prefix frontend
 
 ---
 
+## 🌐 Try It Live
+
+Experience File Fly in action at: **[hsnat.me](https://hsnat.me)**
+
+---
+
 ## 🔌 API Endpoints
 
 ### Health & Status
@@ -270,6 +285,7 @@ The frontend automatically detects the backend server from the current origin or
 - **Auto-Expiry** - Automatic file cleanup after 10 minutes
 - **Secure Filenames** - Random UUID filenames prevent path traversal
 - **Error Handling** - Global error handler prevents information leakage
+- **Network Isolation** - Files only accessible on local network
 
 ---
 
@@ -310,12 +326,29 @@ The frontend automatically detects the backend server from the current origin or
 - [ ] File preview functionality
 - [ ] Direct peer-to-peer transfer option
 - [ ] WebSocket for real-time updates
+- [ ] File encryption support
+- [ ] Custom expiry time settings
 
 ---
 
-## 💬 Support & Contributing
+## 🤝 Contributing
 
-Have a question or found a bug? Feel free to open an issue on GitHub!
+We welcome contributions! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 💬 Support & Issues
+
+Have a question or found a bug? Feel free to:
+- [Open an issue](https://github.com/hsnataleem/File-Fly/issues) on GitHub
+- Visit the [live demo](https://hsnat.me) for testing
+- Check the [How It Works](https://hsnat.me/how-it-works) page for help
 
 ---
 
@@ -345,4 +378,16 @@ npm run dev
 
 ---
 
-**Made with ❤️ by [hsnataleem](https://github.com/hsnataleem)**
+## 📊 Project Stats
+
+- **Language**: JavaScript
+- **Repository**: [github.com/hsnataleem/File-Fly](https://github.com/hsnataleem/File-Fly)
+- **Live Demo**: [hsnat.me](https://hsnat.me)
+- **License**: ISC
+- **Status**: Active Development
+
+---
+
+**Made with ❤️ by [Hasnat Aleem](https://github.com/hsnataleem)**
+
+**Check out more projects at [hsnat.me](https://hsnat.me)**
